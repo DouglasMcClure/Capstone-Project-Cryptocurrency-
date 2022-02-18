@@ -33,9 +33,9 @@ $dbh->do('PRAGMA foreign_keys');
 
 my @ddl = (
     'CREATE TABLE DATA (
-        id varchar(255),
+        id varchar(255) ,
         title varchar(255),
-        CONTENT TEXT,
+        content TEXT,
         publish_at varchar(255),
         name varchar(255),
         tags varchar(255),
@@ -51,7 +51,7 @@ for my $sql (@ddl) {
 for ( @{$data->{data}} ) {
    print Dumper $data;
    my $data_id = $_->{id};
-      my $query1 ="insert into DATA (CONTENT) values (?) ";
+      my $query1 ="insert into DATA (id) values (?) ";
       my $statement = $dbh->prepare($query1);
       $statement->execute($data_id);
    }
