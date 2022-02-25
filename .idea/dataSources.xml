@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+<<<<<<< HEAD
     <data-source source="LOCAL" name="MySQL - @localhost" uuid="68c75fbe-1f43-4683-8cc7-a47f50b47238">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+=======
+    <data-source source="LOCAL" name="doug_api" uuid="20ce7c95-a371-4be9-b9de-de025ba62a40">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:doug_api</jdbc-url>
+>>>>>>> origin/main
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
