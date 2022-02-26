@@ -51,7 +51,7 @@ for my $sql (@ddl) {
 for ( @{$data->{data}} ) {
    print Dumper $data;
    my $data_id = $_->{id};
-      my $query1 ="insert into DATA (id) values (?) ";
+      my $query1 = "\"insert into news (id) values (?) \"";
       my $statement = $dbh->prepare($query1);
       $statement->execute($data_id);
    }
