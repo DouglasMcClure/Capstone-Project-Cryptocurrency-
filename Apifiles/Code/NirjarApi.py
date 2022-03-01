@@ -1,14 +1,82 @@
 import finnhub
 import json
-finnhub_client = finnhub.Client(api_key="c83f31qad3ift3bm8f7g")
+import sqlite3
+from sqlite3 import Error
 
-print(finnhub_client.crypto_candles('BINANCE:BTCUSDT', 'D', 1590988249, 1591852249))
-res = finnhub_client.crypto_candles('BINANCE:BTCUSDT', 'D', 1590988249, 1591852249)
-data = json.dumps(res)
-f = open("NirjarOutput.json", "w")
-f.write(data)
-f.close()
+def create_connection(db_file):
+    """ create a database connection to the SQLite database
+            specified by the db_file
+        :param db_file: database file
+        :return: Connection object or None
+        """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Error as e:
+        print(e)
 
-# open and read the file after the appending:
-f = open("NirjarOutput.json", "r")
-print(f.read())
+    return conn
+
+
+def select_all_tasks(conn):
+    """
+    Query all rows in the tasks table
+    :param conn: the Connection object
+    :return:
+    """
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM finnhub_candles")
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
+
+    with open('NirjarOutput.json') as json_file:
+        data = json.load(json_file)
+        print(data)
+        sql1 = 'DROP TABLE IF EXISTS finnhub_candles'
+        sql2 = 'CREATE TABLE finnhub_candles (close_price float, high_price float, low_price float, open_price float, tstamp TIMESTAMP, volume_data float)'
+        sql3 = 'INSERT OR REPLACE INTO finnhub_candles VALUES (?, ?, ?, ?, ?, ?);'
+        cur.execute(sql1)
+        cur.execute(sql2)
+        for r in data:
+            print(r)
+            close_price = data['c']
+            print(type(close_price))
+            high_price = data['h']
+            print(type(high_price))
+            low_price = data['l']
+            print(type(low_price))
+            open_price = data['o']
+            print(type(open_price))
+            timestamp = data['t']
+            print(type(timestamp))
+            volume_data = data['v']
+            print(type(volume_data))
+            val = (close_price, high_price, low_price, open_price, timestamp, volume_data)
+            conn.commit()
+            cur.execute(sql3, val)
+            conn.commit()
+
+        cur.close()
+
+
+        print("records inserted")
+
+def main():
+    file = "capstonedatabase.sqlite"
+    finnhub_client = finnhub.Client(api_key="c83f31qad3ift3bm8f7g")
+    print(finnhub_client.crypto_candles('BINANCE:BTCUSDT', 'D', 1590988249, 1591852249))
+    res = finnhub_client.crypto_candles('BINANCE:BTCUSDT', 'D', 1590988249, 1591852249)
+
+
+    # create a database connection
+    conn = create_connection(file)
+
+    with conn:
+        select_all_tasks(conn)
+
+
+if __name__ == '__main__':
+    main()
