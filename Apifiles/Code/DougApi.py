@@ -40,7 +40,8 @@ def select_all_tasks(conn):
         data = json.load(json_file)
         print(data)
         sql1 = 'DROP TABLE IF EXISTS messario_news'
-        sql2 = 'CREATE TABLE messario_news (id varchar(255), title varchar(255), content text, published_at TIMESTAMP, url varchar(255))'
+        sql2 = 'CREATE TABLE messario_news (id varchar(255), title varchar(255), content text, published_at ' \
+               'TIMESTAMP, url varchar(255)) '
         sql3 = 'INSERT OR REPLACE INTO messario_news VALUES (?, ?, ?, ?, ?)'
         cur.execute(sql1)
         cur.execute(sql2)
