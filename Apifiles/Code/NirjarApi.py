@@ -3,6 +3,7 @@ import json
 import sqlite3
 from sqlite3 import Error
 
+
 def create_connection(db_file):
     """ create a database connection to the SQLite database
             specified by the db_file
@@ -42,20 +43,20 @@ def select_all_tasks(conn):
         sql3 = 'INSERT OR REPLACE INTO finnhub_candles VALUES (?, ?, ?, ?, ?, ?)'
         cur.execute(sql1)
         cur.execute(sql2)
+        i = 0
         for r in data:
-            close_price = data['c']
-            print(type(close_price))
-            close_price = (*close_price, sep = ',')
+            close_price = data['c'][i]
             print(close_price)
-            high_price = data['h']
-            low_price = data['l']
-            open_price = data['o']
-            timestamp = data['t']
-            volume_data = data['v']
+            high_price = data['h'][i]
+            low_price = data['l'][i]
+            open_price = data['o'][i]
+            timestamp = data['t'][i]
+            volume_data = data['v'][i]
             val = (close_price, high_price, low_price, open_price, timestamp, volume_data)
             conn.commit()
             cur.execute(sql3, val)
             conn.commit()
+            i=i+1
 
         cur.close()
 
